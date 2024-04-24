@@ -13,7 +13,7 @@ import chalk from 'chalk'
  * @param {string} [options.borderTop='┌─┐'] - The characters to use for the top border of the table.
  * @param {string} [options.borderMid='├─┤'] - The characters to use for the middle border of the table.
  * @param {string} [options.borderBot='└─┘'] - The characters to use for the bottom border of the table.
- * @param {Function} [options.borderColor=chalk.dim.grey] - The color function for the border.
+ * @param {Function} [options.bColor=chalk.dim.grey] - The color function for the border.
  * @param {Function} [options.titleColor=chalk.bold.red] - The color function for the title.
  * @param {Function} [options.subtitleColor=chalk.grey] - The color function for the subtitle.
  * @param {Function} [options.contentKeyColor=chalk.white] - The color function for the keys in the content.
@@ -24,6 +24,24 @@ import chalk from 'chalk'
  * @param {Function} [options.footerValueColor=chalk.yellow] - The color function for the values in the footer.
  * @param {Function} [options.afterTextColor=chalk.dim.grey] - The color function for the after text.
  */
+
+function getColor(input) {
+  if (typeof input === 'string') {
+    const parts = input.split('.')
+    if (parts[0] === 'chalk') {
+      parts.shift()
+    }
+    let color = chalk
+    for (let part of parts) {
+      color = color[part]
+    }
+
+    return color
+  } else {
+    return input
+  }
+}
+
 export function logTable({
   title = 'Welcome to NextWS',
   subtitle = 'NextJS + Websocket + Strapi -- Dockerized',
@@ -53,6 +71,18 @@ export function logTable({
   footerValueColor = chalk.yellow,
   afterTextColor = chalk.dim.grey
 } = {}) {
+  const bColor = getColor(borderColor)
+  //   borderColor = getColor(chalk.dim.grey)
+  titleColor = getColor(chalk.bold.red)
+  subtitleColor = getColor(chalk.grey)
+  contentKeyColor = getColor(chalk.white)
+  contentValueColor = getColor(chalk.bold.yellow)
+  footerHeaderKeyColor = getColor(chalk.grey)
+  footerHeaderValueColor = getColor(chalk.grey)
+  footerKeyColor = getColor(chalk.white)
+  footerValueColor = getColor(chalk.yellow)
+  afterTextColor = getColor(chalk.dim.grey)
+
   const keyLength = Math.max(
     ...Object.keys(content).map((key) => key.length),
     ...Object.keys(footerHeaders).map((key) => key.length),
@@ -70,26 +100,16 @@ export function logTable({
 
   const valueLength = lineLength - keyLength - 8
 
-  function yzLine({
-    content = '',
-    color = borderColor,
-    valueColor = contentValueColor,
-    fillChar = ' ',
-    startChar = '│',
-    endChar = '│',
-    isContentLine = false
-  }) {
+  function yzLine({ content = '', color = bColor, valueColor = contentValueColor, fillChar = ' ', startChar = '│', endChar = '│', isContentLine = false }) {
     let line = ''
     if (isContentLine) {
       const keyPadding = ' '.repeat(keyLength - content.key.length + 1)
       const valuePadding = ' '.repeat(valueLength - content.value.length + 1)
-      line = `${borderColor(startChar)}  ${color(content.key + ':')}${keyPadding} ${valueColor(content.value)}${valuePadding}${borderColor(endChar)}`
+      line = `${bColor(startChar)}  ${color(content.key + ':')}${keyPadding} ${valueColor(content.value)}${valuePadding}${bColor(endChar)}`
     } else {
       const leftPaddingLength = Math.floor((lineLength - content.length) / 2) - 1
       const rightPaddingLength = lineLength - leftPaddingLength - content.length - 2
-      line = `${borderColor(startChar)}${color(fillChar.repeat(leftPaddingLength))}${color(content)}${color(fillChar.repeat(rightPaddingLength))}${borderColor(
-        endChar
-      )}`
+      line = `${bColor(startChar)}${color(fillChar.repeat(leftPaddingLength))}${color(content)}${color(fillChar.repeat(rightPaddingLength))}${bColor(endChar)}`
     }
     console.log(line)
   }
