@@ -142,3 +142,15 @@ export function logTable({
   yzBorder(borderBot)
   console.log(afterTextColor(`   ${afterText}`))
 }
+
+export function yesNo(name, message) {
+  return {
+    type: 'select',
+    name: name,
+    message: chalk.bold.yellow(message),
+    choices: [
+      { title: 'No', description: 'No', value: false },
+      { title: 'Yes', description: 'Yes', value: true }
+    ]
+  }
+}
