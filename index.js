@@ -72,16 +72,16 @@ export function logTable({
   afterTextColor = chalk.dim.grey
 } = {}) {
   const bColor = getColor(borderColor)
-  //   borderColor = getColor(chalk.dim.grey)
-  titleColor = getColor(chalk.bold.red)
-  subtitleColor = getColor(chalk.grey)
-  contentKeyColor = getColor(chalk.white)
-  contentValueColor = getColor(chalk.bold.yellow)
-  footerHeaderKeyColor = getColor(chalk.grey)
-  footerHeaderValueColor = getColor(chalk.grey)
-  footerKeyColor = getColor(chalk.white)
-  footerValueColor = getColor(chalk.yellow)
-  afterTextColor = getColor(chalk.dim.grey)
+  // borderColor = getColor(borderColor)
+  titleColor = getColor(titleColor)
+  subtitleColor = getColor(subtitleColor)
+  contentKeyColor = getColor(contentKeyColor)
+  contentValueColor = getColor(contentValueColor)
+  footerHeaderKeyColor = getColor(footerHeaderKeyColor)
+  footerHeaderValueColor = getColor(footerHeaderValueColor)
+  footerKeyColor = getColor(footerKeyColor)
+  footerValueColor = getColor(footerValueColor)
+  afterTextColor = getColor(afterTextColor)
 
   const keyLength = Math.max(
     ...Object.keys(content).map((key) => key.length),
